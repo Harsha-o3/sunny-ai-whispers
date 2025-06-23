@@ -1,15 +1,16 @@
 
 import { useState, useEffect } from 'react';
-import { CurrentWeather } from '@/components/CurrentWeather';
-import { WeatherForecast } from '@/components/WeatherForecast';
-import { AIInsights } from '@/components/AIInsights';
-import { WeatherCharts } from '@/components/WeatherCharts';
-import { EmergencyAlerts } from '@/components/EmergencyAlerts';
 import { NavigationHeader } from '@/components/NavigationHeader';
+import { WeatherOverview } from '@/components/WeatherOverview';
+import { DetailedForecast } from '@/components/DetailedForecast';
+import { WeatherInsights } from '@/components/WeatherInsights';
+import { WeatherAnalytics } from '@/components/WeatherAnalytics';
+import { AlertsCenter } from '@/components/AlertsCenter';
+import { SettingsPanel } from '@/components/SettingsPanel';
 
 const Index = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [weatherCondition, setWeatherCondition] = useState<'sunny' | 'rainy' | 'cloudy'>('sunny');
+  const [activeView, setActiveView] = useState<'overview' | 'forecast' | 'insights' | 'analytics'>('overview');
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -19,50 +20,41 @@ const Index = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Simulate weather condition changes for demo
-  useEffect(() => {
-    const conditions: ('sunny' | 'rainy' | 'cloudy')[] = ['sunny', 'rainy', 'cloudy'];
-    const interval = setInterval(() => {
-      setWeatherCondition(conditions[Math.floor(Math.random() * conditions.length)]);
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const getBackgroundClass = () => {
-    switch (weatherCondition) {
-      case 'sunny':
-        return 'bg-gradient-to-br from-weather-sunny-300 via-weather-sunny-400 to-weather-sunny-500';
-      case 'rainy':
-        return 'bg-gradient-to-br from-weather-rainy-400 via-weather-rainy-500 to-weather-rainy-600';
-      case 'cloudy':
-        return 'bg-gradient-to-br from-weather-cloudy-300 via-weather-cloudy-400 to-weather-cloudy-500';
-      default:
-        return 'bg-gradient-to-br from-weather-sunny-300 via-weather-sunny-400 to-weather-sunny-500';
-    }
-  };
-
   return (
-    <div className={`min-h-screen transition-all duration-1000 ${getBackgroundClass()} ${weatherCondition === 'rainy' ? 'rain-effect' : ''} ${weatherCondition === 'cloudy' ? 'floating-clouds' : ''}`}>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-stone-50 abstract-pattern">
       <div className="relative z-10">
-        <NavigationHeader currentTime={currentTime} />
+        <NavigationHeader 
+          currentTime={currentTime} 
+          activeView={activeView}
+          onViewChange={setActiveView}
+        />
         
-        <div className="container mx-auto px-4 py-6 space-y-6">
-          {/* Emergency Alerts */}
-          <EmergencyAlerts />
+        <div className="container mx-auto px-6 py-8 space-y-8">
+          {/* Alert Center */}
+          <AlertsCenter />
           
-          {/* Current Weather */}
-          <CurrentWeather condition={weatherCondition} />
+          {/* Main Content */}
+          {activeView === 'overview' && (
+            <div className="space-y-8">
+              <WeatherOverview />
+              <WeatherInsights />
+            </div>
+          )}
           
-          {/* AI Insights */}
-          <AIInsights condition={weatherCondition} />
+          {activeView === 'forecast' && (
+            <DetailedForecast />
+          )}
           
-          {/* Forecast and Charts Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <WeatherForecast />
-            <WeatherCharts />
-          </div>
+          {activeView === 'insights' && (
+            <WeatherInsights expanded />
+          )}
+          
+          {activeView === 'analytics' && (
+            <WeatherAnalytics />
+          )}
         </div>
+        
+        <SettingsPanel />
       </div>
     </div>
   );

@@ -38,47 +38,32 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
@@ -99,75 +84,80 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-gradient-to-br from-slate-50 via-gray-50 to-stone-50 text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 }
 
-/* Weather animations */
+/* Abstract and White Theme Components */
 @layer components {
-  .weather-bg-sunny {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  }
-  
-  .weather-bg-rainy {
-    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
-  }
-  
-  .weather-bg-cloudy {
-    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-  }
-  
-  .floating-clouds::before {
-    content: '';
-    position: absolute;
-    top: 10%;
-    left: -100px;
-    width: 100px;
-    height: 40px;
-    background: white;
-    border-radius: 50px;
-    opacity: 0.3;
-    animation: drift 20s linear infinite;
-  }
-  
-  .floating-clouds::after {
-    content: '';
-    position: absolute;
-    top: 20%;
-    left: -150px;
-    width: 80px;
-    height: 30px;
-    background: white;
-    border-radius: 40px;
-    opacity: 0.2;
-    animation: drift 25s linear infinite;
-    animation-delay: -5s;
-  }
-  
-  .rain-effect {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .rain-effect::before {
-    content: '';
-    position: absolute;
-    top: -100vh;
-    left: 0;
-    width: 100%;
-    height: 200vh;
-    background-image: repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 98px,
-      rgba(255, 255, 255, 0.03) 100px
-    );
-    animation: rain 1s linear infinite;
-  }
-  
   .glass-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.05),
+      0 10px 25px rgba(0, 0, 0, 0.05),
+      0 20px 40px rgba(0, 0, 0, 0.02);
   }
+  
+  .abstract-gradient {
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(248, 250, 252, 0.8) 25%,
+      rgba(241, 245, 249, 0.7) 50%,
+      rgba(226, 232, 240, 0.6) 75%,
+      rgba(203, 213, 225, 0.5) 100%
+    );
+  }
+  
+  .minimal-shadow {
+    box-shadow: 
+      0 1px 2px rgba(0, 0, 0, 0.04),
+      0 4px 12px rgba(0, 0, 0, 0.02);
+  }
+  
+  .floating-element {
+    position: relative;
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .subtle-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, transparent, rgba(0,0,0,0.02), transparent);
+    border-radius: inherit;
+    z-index: -1;
+  }
+  
+  .abstract-pattern {
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(0,0,0,0.01) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(0,0,0,0.02) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(0,0,0,0.01) 0%, transparent 50%);
+  }
+}
+
+/* Refined Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-5px) rotate(0.5deg); }
+  66% { transform: translateY(-3px) rotate(-0.5deg); }
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes gentle-drift {
+  0% { transform: translateX(-20px) translateY(0px); }
+  50% { transform: translateX(20px) translateY(-10px); }
+  100% { transform: translateX(-20px) translateY(0px); }
+}
+
+@keyframes minimal-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
